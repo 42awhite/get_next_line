@@ -1,0 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ablanco- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/22 18:09:19 by ablanco-          #+#    #+#             */
+/*   Updated: 2022/11/22 18:32:10 by ablanco-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	c;
+
+	c = 0;
+	while (str[c] != '\0')
+		c++;
+	return (c);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*str;
+	size_t	c;
+	size_t	cont;
+
+	if (!s1)
+		return (0);
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		return (0);
+	c = 0;
+	cont = 0;
+	while (s1[c])
+	{
+		str[cont] = s1[c];
+		cont++;
+		c++;
+	}
+	c = 0;
+	while (s2[c])
+		str[cont++] = s2[c++];
+	str[cont] = '\0';
+	return (str);
+}
+
+void	*ft_bzero(void *s, size_t n)
+{
+	size_t	q;
+	char	*str;
+
+	str = s;
+	q = 0;
+	while (q < n)
+	{
+		str[q] = '\0';
+		q++;
+	}
+	return (str);
+}
+
+void	*ft_calloc(size_t cont, size_t size)
+{
+	void	*pnt;
+	size_t	n;
+
+	n = size * cont;
+	if (n < size && n < cont)
+		return (0);
+	pnt = malloc(n);
+	if (pnt == (void *)0)
+		return (0);
+	ft_bzero(pnt, n);
+	return (pnt);
+}

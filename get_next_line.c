@@ -1,32 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ablanco- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/21 17:36:24 by ablanco-          #+#    #+#             */
-/*   Updated: 2022/11/22 20:08:05 by ablanco-         ###   ########.fr       */
+/*   Created: 2022/11/22 18:57:50 by ablanco-          #+#    #+#             */
+/*   Updated: 2022/11/22 20:08:09 by ablanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <limits.h>
-# include <stdarg.h>
-# include <fcntl.h>
-# include <stdlib.h>
+char	*read_buf(int fd)
+{
+	char	*buffer;
+	size_t	buf_size;
+	
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
+	if (!buffer)
+		return (NULL);
+	buf_size = read(fd, buffer, BUFFER_SIZE);
+	buffer[buf_size++] = '\0';
+	return (buffer);
+}
 
-# ifndef	BUFFER_SIZE
-#  define	BUFFER_SIZE 85
-# endif
+int	main(void)
+{
+	char	*buf;
+	int		fd;
 
-size_t	ft_strlen(const char *str);
-char	*ft_strjoin(char const *s1, char const *s2);
-void	*ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t cont, size_t size);
-
-#endif
+	fd = open("file.txt", O_RDONLY);
+	buf = read_buf(fd);
+	printf("%s\n", buf);
+	close(fd);
+}
