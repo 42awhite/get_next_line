@@ -6,7 +6,7 @@
 /*   By: ablanco- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 18:57:50 by ablanco-          #+#    #+#             */
-/*   Updated: 2022/11/22 20:08:09 by ablanco-         ###   ########.fr       */
+/*   Updated: 2022/11/24 17:19:38 by ablanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,38 @@ char	*read_buf(int fd)
 	return (buffer);
 }
 
+char	*line(char *buffer)
+{
+	size_t		pos_n;
+	char		*str_line;
+	
+	pos_n = 0;
+	if (!buffer)
+		return (NULL);
+	while ((buffer[pos_n] != '\n' && buffer[pos_n] != '\0'))
+			pos_n++;
+	str_line = ft_calloc(pos_n + 2, sizeof(char));
+	if (!str_line)
+		return (NULL);
+	pos_n = 0;
+	while (buffer[pos_n] != '\n' && buffer[pos_n] != '\0')
+	{
+		str_line[pos_n] = buffer[pos_n];
+		pos_n++;
+	}
+	if (buffer[pos_n] == '\n')
+		str_line[pos_n] = '\n';
+	str_line[++pos_n] = '\0';
+	return (str_line);
+}
+
+
 int	main(void)
 {
-	char	*buf;
-	int		fd;
+	char 	buffer[] = "hola, me llamo pingui \n, soy muy salado \n y solo como pescado congelado";
+	char	*str_line;
 
-	fd = open("file.txt", O_RDONLY);
-	buf = read_buf(fd);
-	printf("%s\n", buf);
-	close(fd);
+	str_line = line(buffer);
+	printf("%s", str_line);
+	free(str_line);
 }

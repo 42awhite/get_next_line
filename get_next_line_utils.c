@@ -6,7 +6,7 @@
 /*   By: ablanco- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 18:09:19 by ablanco-          #+#    #+#             */
-/*   Updated: 2022/11/22 18:32:10 by ablanco-         ###   ########.fr       */
+/*   Updated: 2022/11/24 17:10:08 by ablanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,20 @@ void	*ft_calloc(size_t cont, size_t size)
 		return (0);
 	ft_bzero(pnt, n);
 	return (pnt);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	cont;
+
+	cont = 0;
+	while (s[cont] != '\0')
+	{
+		if (s[cont] == (char) c)
+			return ((char *)&s[cont]);
+		cont++;
+	}
+	if ((char)c == '\0')
+		return ((char *)&s[cont]);
+	return (NULL);
 }
