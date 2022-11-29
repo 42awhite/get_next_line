@@ -35,7 +35,6 @@ char	*ft_line(char *buffer)
 		return (NULL);
 	while ((buffer[pos_n] != '\n' && buffer[pos_n] != '\0'))
 			pos_n++;
-	printf("%zu", pos_n);
 	str_line = ft_calloc(pos_n + 1, sizeof(char));
 	if (!str_line)
 		return (NULL);
@@ -50,10 +49,33 @@ char	*ft_line(char *buffer)
 	return (str_line);
 }
 
+char	*save_txt(char *buffer)
+{
+	char	*txt;
+	size_t	pos_n;
+	size_t	c_txt;
+
+	if (!buffer)
+		return (NULL);
+	while (buffer[pos_n] != '\n' && buffer[pos_n] != '\0')
+		pos_n++;
+	txt = ft_calloc(BUFFER_SIZE - pos_n, sizeof(char));
+	if (!txt)
+		return(NULL);
+	c_txt = 0;
+	while (buffer[pos_n])
+	{
+		txt[c_txt] = buffer[pos_n];
+		pos_n++;
+		c_txt++;
+	}
+	return (txt);
+}
+
 char	*get_next_line(int fd)
 {
-	char	*buffer;
-	char	*line;
+	char		*buffer;
+	static char	*line;
 
 	buffer = read_buf(fd);
 	line = ft_line(buffer);
