@@ -21,11 +21,11 @@ char	*read_buf(int fd)
 	if (!buffer)
 		return (NULL);
 	buf_size = read(fd, buffer, BUFFER_SIZE);
-	buffer[buf_size++] = '\0';
+	printf("bsize%zu", buf_size);
 	return (buffer);
 }
 
-char	*line(char *buffer)
+char	*ft_line(char *buffer)
 {
 	size_t		pos_n;
 	char		*str_line;
@@ -35,7 +35,8 @@ char	*line(char *buffer)
 		return (NULL);
 	while ((buffer[pos_n] != '\n' && buffer[pos_n] != '\0'))
 			pos_n++;
-	str_line = ft_calloc(pos_n + 2, sizeof(char));
+	printf("%zu", pos_n);
+	str_line = ft_calloc(pos_n + 1, sizeof(char));
 	if (!str_line)
 		return (NULL);
 	pos_n = 0;
@@ -46,17 +47,29 @@ char	*line(char *buffer)
 	}
 	if (buffer[pos_n] == '\n')
 		str_line[pos_n] = '\n';
-	str_line[++pos_n] = '\0';
 	return (str_line);
 }
 
+char	*get_next_line(int fd)
+{
+	char	*buffer;
+	char	*line;
+
+	buffer = read_buf(fd);
+	line = ft_line(buffer);
+	free(buffer);
+	buffer = NULL;
+	return (line);
+}
 
 int	main(void)
 {
-	char 	buffer[] = "hola, me llamo pingui \n, soy muy salado \n y solo como pescado congelado";
-	char	*str_line;
+	int		fd;
+	char	*line;
 
-	str_line = line(buffer);
-	printf("%s", str_line);
-	free(str_line);
+	fd = open("file.txt", O_RDONLY);
+	line = get_next_line(fd);
+	printf("\n%s", line);
+	close (fd);
+	system("leaks -q a.out\n");
 }
