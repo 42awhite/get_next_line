@@ -57,6 +57,7 @@ char	*save_txt(char *buffer)
 
 	if (!buffer)
 		return (NULL);
+	pos_n = 0;
 	while (buffer[pos_n] != '\n' && buffer[pos_n] != '\0')
 		pos_n++;
 	txt = ft_calloc(BUFFER_SIZE - pos_n, sizeof(char));
@@ -86,12 +87,10 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	int		fd;
-	char	*line;
+	char	txt[] = "hola, me llamo pingui, \n soy  muy salado \n y solo como \n pescado congelado";
+	char	*save;
 
-	fd = open("file.txt", O_RDONLY);
-	line = get_next_line(fd);
-	printf("\n%s", line);
-	close (fd);
+	save = save_txt(txt);
+	printf("%s", save);
 	system("leaks -q a.out\n");
 }
