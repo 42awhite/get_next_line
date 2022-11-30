@@ -12,19 +12,6 @@
 
 #include "get_next_line.h"
 
-char	*read_buf(int fd)
-{
-	char	*buffer;
-	size_t	buf_size;
-	
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
-	if (!buffer)
-		return (NULL);
-	buf_size = read(fd, buffer, BUFFER_SIZE);
-	printf("bsize%zu", buf_size);
-	return (buffer);
-}
-
 char	*ft_line(char *buffer)
 {
 	size_t		pos_n;
@@ -60,7 +47,7 @@ char	*save_txt(char *buffer)
 	pos_n = 0;
 	while (buffer[pos_n] != '\n' && buffer[pos_n] != '\0')
 		pos_n++;
-	txt = ft_calloc(BUFFER_SIZE - pos_n, sizeof(char));
+	txt = ft_calloc(ft_strlen(buffer) - pos_n + 1, sizeof(char));
 	if (!txt)
 		return(NULL);
 	c_txt = 0;
@@ -71,6 +58,19 @@ char	*save_txt(char *buffer)
 		c_txt++;
 	}
 	return (txt);
+}
+
+char	*read_buf(int fd)
+{
+	char	*buffer;
+	size_t	buf_size;
+	
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
+	if (!buffer)
+		return (NULL);
+	buf_size = read(fd, buffer, BUFFER_SIZE);
+	printf("bsize%zu", buf_size);
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
@@ -92,5 +92,6 @@ int	main(void)
 
 	save = save_txt(txt);
 	printf("%s", save);
-	system("leaks -q a.out\n");
+	fflush(NULL);
+	system("leaks -q a.out");
 }
