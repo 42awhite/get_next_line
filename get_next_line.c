@@ -60,38 +60,53 @@ char	*save_txt(char *buffer)
 	return (txt);
 }
 
-char	*read_buf(int fd)
+char	*read_join_buf(int fd, char *txt)
 {
 	char	*buffer;
-	size_t	buf_size;
+	int		buf_size;
 	
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
 	if (!buffer)
 		return (NULL);
-	buf_size = read(fd, buffer, BUFFER_SIZE);
-	printf("bsize%zu", buf_size);
-	return (buffer);
+	while (!ft_strchr(txt, '\n'))
+	{
+		buf_size = read(fd, buffer, BUFFER_SIZE);
+		if (buf_size < 0)
+		{
+			free(buffer);
+			return(NULL);
+		}
+		txt = ft_strjoin(txt, buffer);
+	}
+	free (buffer);
+	return (txt);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*buffer;
-	static char	*line;
+	static char		*buffer;
+	char			*line;
 
-	buffer = read_buf(fd);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		free(buffer);
+		buffer = NULL;
+		return (NULL);
+	}	
+	buffer = read_join_buf(fd, buffer);
 	line = ft_line(buffer);
-	free(buffer);
-	buffer = NULL;
+	buffer = save_txt(buffer);
 	return (line);
 }
 
 int	main(void)
 {
-	char	txt[] = "hola, me llamo pingui, \n soy  muy salado \n y solo como \n pescado congelado";
-	char	*save;
+	int		fd;
+	char	*buf;
 
-	save = save_txt(txt);
-	printf("%s", save);
-	fflush(NULL);
-	system("leaks -q a.out");
+	fd = open ("file.txt", O_RDONLY);
+	buf = get_next_line(fd);
+	printf("%s\n", buf);
+	close(fd);
+	//system("leaks -q a.out");
 }
