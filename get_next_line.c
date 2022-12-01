@@ -12,6 +12,28 @@
 
 #include "get_next_line.h"
 
+char	*read_join_buf(int fd, char *txt)
+{
+	char	*buffer;
+	int		buf_size;
+	
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
+	if (!buffer)
+		return (NULL);
+	while (!ft_strchr(txt, '\n'))
+	{
+		buf_size = read(fd, buffer, BUFFER_SIZE);
+		if (buf_size < 0)
+		{
+			free(buffer);
+			return(NULL);
+		}
+		txt = ft_strjoin(txt, buffer);
+	}
+	free (buffer);
+	return (txt);
+}
+
 char	*ft_line(char *buffer)
 {
 	size_t		pos_n;
@@ -57,28 +79,6 @@ char	*save_txt(char *buffer)
 		pos_n++;
 		c_txt++;
 	}
-	return (txt);
-}
-
-char	*read_join_buf(int fd, char *txt)
-{
-	char	*buffer;
-	int		buf_size;
-	
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
-	if (!buffer)
-		return (NULL);
-	while (!ft_strchr(txt, '\n'))
-	{
-		buf_size = read(fd, buffer, BUFFER_SIZE);
-		if (buf_size < 0)
-		{
-			free(buffer);
-			return(NULL);
-		}
-		txt = ft_strjoin(txt, buffer);
-	}
-	free (buffer);
 	return (txt);
 }
 
