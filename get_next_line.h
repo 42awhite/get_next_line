@@ -28,5 +28,6 @@ size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	*ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t cont, size_t size);
+char    *ft_strchr(const char *s, int c);
 
 #endif

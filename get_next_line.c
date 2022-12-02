@@ -20,7 +20,8 @@ char	*read_join_buf(int fd, char *txt)
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
 	if (!buffer)
 		return (NULL);
-	while (!ft_strchr(txt, '\n'))
+	buf_size = 1;
+	while (buf_size > 0)
 	{
 		buf_size = read(fd, buffer, BUFFER_SIZE);
 		if (buf_size < 0)
@@ -28,7 +29,10 @@ char	*read_join_buf(int fd, char *txt)
 			free(buffer);
 			return(NULL);
 		}
+		buffer[BUFFER_SIZE] = '\0';
 		txt = ft_strjoin(txt, buffer);
+		if(ft_strchr(txt, '\n'))
+			break ;
 	}
 	free (buffer);
 	return (txt);
