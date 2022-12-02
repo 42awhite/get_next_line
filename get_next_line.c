@@ -107,10 +107,16 @@ int	main(void)
 {
 	int		fd;
 	char	*buf;
+	int		cont;
 
 	fd = open ("file.txt", O_RDONLY);
-	buf = get_next_line(fd);
-	printf("%s\n", buf);
+	cont = 1;
+	while (cont < 4)
+	{
+		buf = get_next_line(fd);
+		printf("%s\n", buf);
+		cont++;
+	}
 	close(fd);
 	//system("leaks -q a.out");
 }

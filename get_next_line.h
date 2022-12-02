@@ -6,7 +6,7 @@
 /*   By: ablanco- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 17:36:24 by ablanco-          #+#    #+#             */
-/*   Updated: 2022/11/22 20:08:05 by ablanco-         ###   ########.fr       */
+/*   Updated: 2022/12/02 13:38:21 by ablanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdlib.h>
 
 # ifndef	BUFFER_SIZE
-#  define	BUFFER_SIZE 85
+#  define	BUFFER_SIZE 4
 # endif
 
 size_t	ft_strlen(const char *str);
