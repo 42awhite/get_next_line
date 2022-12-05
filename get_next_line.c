@@ -16,7 +16,6 @@ char	*read_join_buf(int fd, char *txt)
 {
 	char	*buffer;
 	int		buf_size;
-	
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
 	if (!buffer)
 		return (NULL);
@@ -29,11 +28,13 @@ char	*read_join_buf(int fd, char *txt)
 			free(buffer);
 			return(NULL);
 		}
+	
 		buffer[BUFFER_SIZE] = '\0';
 		txt = ft_strjoin(txt, buffer);
 		if(ft_strchr(txt, '\n'))
 			break ;
 	}
+
 	free (buffer);
 	return (txt);
 }
@@ -48,7 +49,10 @@ char	*ft_line(char *buffer)
 		return (NULL);
 	while ((buffer[pos_n] != '\n' && buffer[pos_n] != '\0'))
 			pos_n++;
-	str_line = ft_calloc(pos_n + 1, sizeof(char));
+	if (buffer[pos_n] == '\n')
+		str_line = ft_calloc(pos_n + 2, sizeof(char));
+	else
+		str_line = ft_calloc(pos_n + 1, sizeof(char));
 	if (!str_line)
 		return (NULL);
 	pos_n = 0;
@@ -72,6 +76,8 @@ char	*save_txt(char *buffer)
 		return (NULL);
 	pos_n = 0;
 	while (buffer[pos_n] != '\n' && buffer[pos_n] != '\0')
+		pos_n++;
+	if (buffer[pos_n] == '\n')
 		pos_n++;
 	txt = ft_calloc(ft_strlen(buffer) - pos_n + 1, sizeof(char));
 	if (!txt)
@@ -111,10 +117,11 @@ int	main(void)
 
 	fd = open ("file.txt", O_RDONLY);
 	cont = 1;
-	while (cont < 4)
-	{
+	while (cont <= 1)
+	{	
 		buf = get_next_line(fd);
-		printf("%s\n", buf);
+		printf("%s", buf);
+		free(buf);
 		cont++;
 	}
 	close(fd);
