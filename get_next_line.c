@@ -12,10 +12,20 @@
 
 #include "get_next_line.h"
 
+char *ft_join_free(char *txt, char *buffer)
+{
+	char	*aux;
+
+	aux = ft_strjoin(txt, buffer);
+	free(txt);
+	return (aux);
+}
+
 char	*read_join_buf(int fd, char *txt)
 {
 	char	*buffer;
 	int		buf_size;
+	
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof (char));
 	if (!buffer)
 		return (NULL);
@@ -23,18 +33,16 @@ char	*read_join_buf(int fd, char *txt)
 	while (buf_size > 0)
 	{
 		buf_size = read(fd, buffer, BUFFER_SIZE);
-		if (buf_size < 0)
+		if (buf_size == -1)
 		{
 			free(buffer);
 			return(NULL);
 		}
-	
 		buffer[BUFFER_SIZE] = '\0';
-		txt = ft_strjoin(txt, buffer);
+		txt = ft_join_free(txt, buffer);
 		if(ft_strchr(txt, '\n'))
 			break ;
 	}
-
 	free (buffer);
 	return (txt);
 }
@@ -108,7 +116,7 @@ char	*get_next_line(int fd)
 	buffer = save_txt(buffer);
 	return (line);
 }
-
+/*
 int	main(void)
 {
 	int		fd;
@@ -125,5 +133,6 @@ int	main(void)
 		cont++;
 	}
 	close(fd);
-	//system("leaks -q a.out");
+	system("leaks -q a.out");
 }
+*/
