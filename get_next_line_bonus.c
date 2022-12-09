@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ablanco- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_join_free(char *txt, char *buffer)
 {
@@ -103,32 +103,40 @@ char	*save_txt(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char		*buffer;
+	static char		*buffer[FOPEN_MAX];
 	char			*line;
 
 	if (read(fd, NULL, 0) < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = read_join_buf(fd, buffer);
-	line = ft_line(buffer);
-	buffer = save_txt(buffer);
+	buffer[fd] = read_join_buf(fd, buffer[fd]);
+	line = ft_line(buffer[fd]);
+	buffer[fd] = save_txt(buffer[fd]);
 	return (line);
 }
-
+/*
 int	main(void)
 {
-	int		fd;
-	char	*buf;
+	int		fd[4];
+	char	*buf[4];
 	int		cont;
+	int		c_fd;
 
-	fd = open ("file.txt", O_RDONLY);
-	cont = 1;
-	while (cont <= 5)
+	fd[0] = open ("file.txt", O_RDONLY);
+	fd[1] = open ("potter.txt", O_RDONLY);
+	fd[2] = open ("Frodo.txt", O_RDONLY);
+	fd[3] = open ("quijote.txt", O_RDONLY);
+	cont = 0;
+	c_fd = 0;
+	while (cont <= 4)
 	{	
-		buf = get_next_line(fd);
-		printf("%s", buf);
-		free(buf);
+		buf[cont] = get_next_line(fd[c_fd++]);
+		printf("%s", buf[cont]);
+		free(buf[cont]);
 		cont++;
 	}
-	close(fd);
+	c_fd = 0;
+	while (c_fd <= 3)
+		close(fd[c_fd++]);
 	//system("leaks -q a.out");
 }
+*/
